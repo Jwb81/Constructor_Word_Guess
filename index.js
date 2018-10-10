@@ -3,11 +3,12 @@ let chalk = require('chalk');
 
 let Word = require('./Word')
 
-let args = process.argv.slice(2).join(' ');
+// let args = process.argv.slice(2).join(' ');
 
 // console.log(args);
 
-let word = new Word(args);
+let wordList = ['hello world']
+let word = new Word(wordList[0]);
 let guessedChars = [];
 let startingGuesses = 10;
 
@@ -16,6 +17,17 @@ let prompt = (guessesLeft) => {
         // throw game ending message
         return;
     }
+    
+    // put a spacer on the command line 
+    console.log('\n****************************\n');
+
+    // show how many guesses are remaining
+    console.log(`Guesses remaining: ${guessesLeft}`)
+
+    // show the letters to the user
+    console.log(word.getLine());
+
+    // get the next letter from the user
     inquirer.prompt([{
             type: 'input',
             message: `${chalk.blue('Next guess: ')}`,
@@ -41,21 +53,20 @@ let prompt = (guessesLeft) => {
         guessedChars = guessedChars.concat(currentGuess);
 
         // check the letter guessed on each letter in the word
-        let found = word.checkVal(currentGuess);
-        if (found)
+        let letterFound = word.checkVal(currentGuess);
+        if (letterFound)
             console.log(`${chalk.green('CORRECT!')}`);
-        else
+        else {
             console.log(`${chalk.red('INCORRECT...')}`);
+            guessesLeft--;
+        }
 
-        
-        // show how many guesses are remaining
-        console.log(`Guesses remaining: ${guessesLeft}`)
 
         // call the Word method to show any matching letters
         let line = word.getLine();
 
         // check if the word is finished
-        if (line.indexOf('_') == -1) {
+        if (line.indexOf(word.getPlaceholder()) == -1) {
             // the word has been guessed
             console.log(`${chalk.rgb(0,255,100).bold(`CONGRATULATIONS! YOU GOT IT!`)}`)
             
@@ -66,7 +77,7 @@ let prompt = (guessesLeft) => {
         }
 
         // call prompt() again
-        return prompt(--guessesLeft);
+        return prompt(guessesLeft);
 
     })
 }

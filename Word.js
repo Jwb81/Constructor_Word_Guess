@@ -28,6 +28,10 @@ let Word = class {
 
         return found;
     }
+
+    getPlaceholder() {
+        return this.letters[0].getPlaceholder();
+    }
 }
 
 module.exports = Word;

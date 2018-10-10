@@ -1,10 +1,9 @@
 
-let placeholder = '_';
-
 let Letter = class {
     constructor(newLetter) {
         this.char = newLetter;
         this.guessed = false;
+        this.placeholder = '-';
 
         if (this.char == ' ') 
             this.guessed = true;
@@ -16,7 +15,7 @@ let Letter = class {
             return this.char;
         
         // else return a placeholder
-        return placeholder;
+        return this.placeholder;
     }
 
     checkVal(guess) {
@@ -25,6 +24,10 @@ let Letter = class {
             return true;
         }
         return false;
+    }
+
+    getPlaceholder() {
+        return this.placeholder;
     }
 
 
