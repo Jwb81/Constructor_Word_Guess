@@ -19,7 +19,7 @@ let Letter = class {
     }
 
     checkVal(guess) {
-        if (guess === this.char) {
+        if (guess.toLowerCase() === this.char.toLowerCase()) {
             this.guessed = true;
             return true;
         }

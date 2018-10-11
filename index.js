@@ -7,17 +7,24 @@ let Word = require('./Word')
 
 // console.log(args);
 
-let wordList = ['hello world']
-let word = new Word(wordList[0]);
+const wordList = ['The Martian', 'Jurassic Park', 'Interstellar']
+let word;
 let guessedChars = [];
-let startingGuesses = 10;
+const startingGuesses = 10;
+
+let setWord = () => {
+    let randomNum = Math.floor(Math.random() * wordList.length);
+    word = new Word(wordList[randomNum]);
+}
 
 let prompt = (guessesLeft) => {
     if (!guessesLeft) {
         // throw game ending message
-        return;
+        console.log(`${chalk.rgb(200,50,100).bold(`Sorry... You did not guess the word. Here's a new one for you :)`)}`)
+        setWord();
+        return prompt(startingGuesses);
     }
-    
+
     // put a spacer on the command line 
     console.log('\n****************************\n');
 
@@ -68,12 +75,13 @@ let prompt = (guessesLeft) => {
         // check if the word is finished
         if (line.indexOf(word.getPlaceholder()) == -1) {
             // the word has been guessed
-            console.log(`${chalk.rgb(0,255,100).bold(`CONGRATULATIONS! YOU GOT IT!`)}`)
-            
-            // start a new word
+            console.log(`${chalk.rgb(0,255,100).bold(`CONGRATULATIONS! YOU GOT IT! Here's another one.`)}`)
 
-            // exit the program
-            return; 
+            // start a new word
+            setWord();
+
+            // start the game again
+            return prompt(startingGuesses);
         }
 
         // call prompt() again
@@ -84,4 +92,5 @@ let prompt = (guessesLeft) => {
 
 
 // start the program
-prompt(startingGuesses);
+setWord();
+let winner = prompt(startingGuesses);
